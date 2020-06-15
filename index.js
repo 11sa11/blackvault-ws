@@ -20,9 +20,9 @@ const knex = require('knex')({
 /** End Configuration **/
 
 const express = require('express');
-const WebSocketServer = require('ws').Server;
+const WebSocket = require('ws');
 const app = express();
-const wss = new WebSocketServer({ port: websocketPort });
+const wss = new WebSocket.Server({ port: websocketPort });
 
 const subscriptionMap = {};
 
@@ -86,6 +86,7 @@ wss.on('connection', function(ws) {
   ws.on('message', message => {
     try {
       const event = JSON.parse(message);
+      console.log(event);
       parseEvent(ws, event);
     } catch (err) {
       console.log(`Bad message: `, err);
@@ -163,6 +164,7 @@ function unsubscribeAccounts(ws, accounts) {
 }
 
 function printStats() {
+  console.log(wss.clients.length);
   const connectedClients = wss.clients.length;
   const tps = tpsCount / statTime;
   console.log(`[Stats] Connected clients: ${connectedClients}; TPS Average: ${tps}`);
