@@ -35,6 +35,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use(express.json());
+
 app.post('/api/new-block', (req, res) => {
   res.sendStatus(200);
   tpsCount++;
@@ -164,8 +165,7 @@ function unsubscribeAccounts(ws, accounts) {
 }
 
 function printStats() {
-  console.log(wss.clients.length);
-  const connectedClients = wss.clients.length;
+  const connectedClients = wss.clients.size;
   const tps = tpsCount / statTime;
   console.log(`[Stats] Connected clients: ${connectedClients}; TPS Average: ${tps}`);
   tpsCount = 0;
